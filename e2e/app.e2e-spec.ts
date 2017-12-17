@@ -9,6 +9,6 @@ describe('Clone & ngrx performance app', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getFirstLink()).toEqual('Clone Performance Overview');
+    expect(page.getHomeH2()).toEqual('RxJS & JavaScript performance measurements');
   });
 });

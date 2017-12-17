@@ -9,23 +9,25 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
+import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
 
 describe('AppComponent', () => {
   let router: Router;
 
   beforeEach(async(() => {
     // noinspection JSIgnoredPromiseFromCall
-    // noinspection JSIgnoredPromiseFromCall
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([{
           path: 'somewhere',
           component: PageNotFoundComponent
-        }])
+        }]),
+        SharedModule,
+        CoreModule
       ],
       declarations: [
-        AppComponent,
-        PageNotFoundComponent
+        AppComponent
       ],
     }).compileComponents();
 

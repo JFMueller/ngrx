@@ -5,7 +5,7 @@ export class AppPage {
     return browser.get('/');
   }
 
-  getFirstLink() {
-    return element(by.css('app-home ul li:nth-child(1) > a:nth-child(1)')).getText();
+  getHomeH2() {
+    return element(by.css('rx-home > h2')).getText();
   }
 }

@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { NavigationComponent } from './navigation/navigation.component';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { LogComponent } from './log/log.component';
+import { TopNavigationComponent } from './top-navigation/top-navigation.component';
+import { SimpleTableComponent } from './simple-table/simple-table.component';
 
 @NgModule({
   imports: [
@@ -13,12 +16,18 @@ import { HomeComponent } from './home/home.component';
   declarations: [
     PageNotFoundComponent,
     NavigationComponent,
-    HomeComponent
+    HomeComponent,
+    LogComponent,
+    TopNavigationComponent,
+    SimpleTableComponent
   ],
   exports: [
     PageNotFoundComponent,
     NavigationComponent,
-    HomeComponent
+    HomeComponent,
+    LogComponent,
+    TopNavigationComponent,
+    SimpleTableComponent
   ]
 })
 export class SharedModule {
