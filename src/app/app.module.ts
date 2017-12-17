@@ -9,6 +9,8 @@ import { NgrxPerformanceModule } from './ngrx-performance/ngrx-performance.modul
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app.routing-module';
 import { CoreModule } from './core/core.module';
+import { StoreModule } from '@ngrx/store';
+import { reducer } from './ngrx-performance/state/ngrx.reducers';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,7 @@ import { CoreModule } from './core/core.module';
   ],
   imports: [
     BrowserModule,
+    StoreModule.forRoot({ counter: reducer }),
     RouterModule,
     HttpClientModule,
     SharedModule,

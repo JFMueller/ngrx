@@ -1,41 +1,11 @@
 <ul id="navigation" class="nav flex-column">
-  <li>
-    <a routerLinkActive="active" routerLink="/clone-performance">Deep & shallow clone performance</a>
-    <ul>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/clone-performance/100000">100.000 elements</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/clone-performance/10000">10.000 elements</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/clone-performance/1000">1.000 elements</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/clone-performance/100">100 elements</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/clone-performance/1">1 element</a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a routerLinkActive="active" routerLink="/ngrx-performance">ngrx performance</a>
-    <ul>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/ngrx-performance/100000">100.000 actions</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/ngrx-performance/10000">10.000 actions</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/ngrx-performance/1000">1.000 actions</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/ngrx-performance/100">100 actions</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/ngrx-performance/1">1 action</a>
+  <li *ngIf="mainRouterLink$ | async as main">
+    <a routerLinkActive="active" [routerLink]="'/' + main.url">{{main.text}}</a>
+    <ul *ngIf="listItems$ | async as listItems">
+      <li class="nav-item" *ngFor="let listItem of listItems">
+        <a class="nav-link" routerLinkActive="active" [routerLink]="'/' + listItem.url + '/' + listItem.count">
+          {{listItem.text}}
+        </a>
       </li>
     </ul>
   </li>
