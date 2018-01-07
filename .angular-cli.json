@@ -20,7 +20,7 @@
       "prefix": "app",
       "styles": [
         "bootstrap.min.css",
-        "global.css"
+        "global.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

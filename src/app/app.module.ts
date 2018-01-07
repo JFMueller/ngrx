@@ -12,6 +12,7 @@ import { CoreModule } from './core/core.module';
 import { StoreModule } from '@ngrx/store';
 import { counterReducer } from './state/reducers/counter';
 import { logReducer } from './state/reducers/log';
+import { projectsReducer } from './state/reducers/projects';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { logReducer } from './state/reducers/log';
     BrowserModule,
     StoreModule.forRoot({
       counter: counterReducer,
-      logs: logReducer
+      logs: logReducer,
+      projects: projectsReducer
     }),
     RouterModule,
     HttpClientModule,

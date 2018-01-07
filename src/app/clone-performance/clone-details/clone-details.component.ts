@@ -1,52 +1,75 @@
 import {
   Component,
+  OnDestroy,
   OnInit
 } from '@angular/core';
-import { CloneTypes } from '../../core/enums/clone-type';
-import { CloneService } from '../../core/services/clone.service';
-import { PerformanceLogService } from '../../core/services/performance-log.service';
-import { DataSampleService } from '../../core/services/data-sample.service';
-import {
-  ActivatedRoute,
-  Params
-} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { WorldBankDto } from '../../core/domain/world-bank';
-import { Observable } from 'rxjs/Observable';
-
-interface CountAndData {
-  count: number;
-  data: any;
-}
+import { AppState } from '../../app.state';
+import { Store } from '@ngrx/store';
+import { ProjectsActions } from '../../state/actions';
+import { CloneType } from '../../core/enums/clone-type';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 
 @Component({
   selector: 'rx-clone-details',
   templateUrl: './clone-details.component.html'
 })
-export class CloneDetailsComponent implements OnInit {
+export class CloneDetailsComponent implements OnInit, OnDestroy {
 
-  clones$: Observable<WorldBankDto[]>;
+  clones: WorldBankDto[];
+  cloneType = CloneType;
+  formGroup: FormGroup;
 
-  constructor(private dataSampleService: DataSampleService,
-              private cloneService: CloneService,
-              private pls: PerformanceLogService,
-              private activatedRoute: ActivatedRoute) {
+  private destroyed$ = new ReplaySubject<boolean>();
+
+  constructor(private activatedRoute: ActivatedRoute,
+              private formBuilder: FormBuilder,
+              private store: Store<AppState>) {
+  }
+
+  get cloneAmountControl(): AbstractControl {
+    return this.formGroup.get('cloneAmount');
+  }
+
+  get rowAmountControl(): AbstractControl {
+    return this.formGroup.get('rowAmount');
   }
 
   ngOnInit(): void {
-    this.clones$ = this.activatedRoute.params
-      .map((params: Params) => +params['count'])
-      .filter((count: number) => count <= 10000)
-      .switchMap(() => this.dataSampleService.loadWorldBankSample(),
-        (count: number, data: WorldBankDto[]) => Object.assign({count: count, data: data}))
-      .map((countAndData: CountAndData) =>
-        this.cloneService.cloneMultipleTimes(countAndData.data, CloneTypes.DeepNative, countAndData.count))
-      .map((clones: WorldBankDto[][]) => clones.pop())
-      .map((clones: WorldBankDto[]) => clones.map((worldBankDto: WorldBankDto) => Object.assign({
-        approvalfy: worldBankDto.approvalfy,
-        board_approval_month: worldBankDto.board_approval_month,
-        lendprojectcost: worldBankDto.lendprojectcost,
-        lendinginstr: worldBankDto.lendinginstr,
-        country_namecode: worldBankDto.country_namecode
-      })));
+    this.formGroup = this.formBuilder.group({
+      rowAmount: [{value: 0, disabled: true}],
+      cloneAmount: [{value: 0, disabled: false}, Validators.required]
+    });
+
+    this.store.select('projects')
+      .takeUntil(this.destroyed$)
+      .subscribe((projects: WorldBankDto[]) => {
+        this.clones = projects;
+        this.rowAmountControl.patchValue(projects.length);
+      });
+  }
+
+  setForm(amount: number): void {
+    this.cloneAmountControl.patchValue(amount);
+  }
+
+  clone(cloneType: CloneType): void {
+    this.store.dispatch(new ProjectsActions.Clone(+this.cloneAmountControl.value, cloneType));
+  }
+
+  clear(): void {
+    this.store.dispatch(new ProjectsActions.DeleteAll());
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

@@ -1,7 +1,7 @@
-<h4 *ngIf="!rows">No data...</h4>
-<table *ngIf="rows" class="table table-striped">
+<table class="table table-striped">
   <thead>
   <tr>
+    <th scope="col">Id</th>
     <th scope="col">Approvalfy</th>
     <th scope="col">Board Approval Month</th>
     <th scope="col">Lend project cost</th>
@@ -11,6 +11,7 @@
   </thead>
   <tbody>
   <tr *ngFor="let row of rows">
+    <td>{{row.id}}</td>
     <td>{{row.approvalfy}}</td>
     <td>{{row.board_approval_month}}</td>
     <td>{{row.lendprojectcost}}</td>

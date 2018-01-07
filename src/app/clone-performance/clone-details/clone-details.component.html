@@ -1,2 +1,21 @@
-<h3>Details</h3>
-<rx-simple-table [rows]="clones$ | async"></rx-simple-table>
+<h3>Clone Details</h3>
+<div [formGroup]="formGroup" class="form-control" >
+  <label for="cloneAmount">Amount of Clones</label>
+  <input id="cloneAmount" type="text" [formControl]="cloneAmountControl"/>
+  <button type="button" class="btn btn-dark btn-sm" (click)="setForm(1)">1 Clone</button>
+  <button type="button" class="btn btn-dark btn-sm" (click)="setForm(10)">10 Clones</button>
+  <button type="button" class="btn btn-dark btn-sm" (click)="setForm(100)">100 Clones</button>
+  <button type="button" class="btn btn-dark btn-sm" (click)="setForm(1000)">1000 Clones</button>
+  <button type="button" class="btn btn-dark btn-sm" (click)="setForm(10000)">10000 Clones</button>
+  <br>
+  <label for="rowAmount">Amount of Rows</label>
+  <input id="rowAmount" type="text" [formControl]="rowAmountControl"/>
+</div>
+<div class="form-control">
+  <button type="button" class="btn btn-dark btn-sm" (click)="clone(cloneType.ShallowES6)">ShallowES6</button>
+  <button type="button" class="btn btn-dark btn-sm" (click)="clone(cloneType.ShallowLodash)">ShallowLodash</button>
+  <button type="button" class="btn btn-dark btn-sm" (click)="clone(cloneType.DeepNative)">DeepNative</button>
+  <button type="button" class="btn btn-dark btn-sm" (click)="clone(cloneType.DeepLodash)">DeepLodash</button>
+  <button type="button" class="btn btn-dark btn-sm" (click)="clear()">Clear</button>
+</div>
+<rx-simple-table *ngIf="clones && clones.length" [rows]="clones"></rx-simple-table>

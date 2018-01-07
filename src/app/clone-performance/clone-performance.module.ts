@@ -4,12 +4,14 @@ import { ClonePerformanceRoutingModule } from './clone-performance.routing-modul
 import { CloneDetailsComponent } from './clone-details/clone-details.component';
 import { CloneOverviewComponent } from './clone-overview/clone-overview.component';
 import { SharedModule } from '../shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    ClonePerformanceRoutingModule
+    ClonePerformanceRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [
     CloneOverviewComponent,
