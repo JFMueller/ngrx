@@ -1,7 +1,6 @@
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/from';
 
-import 'rxjs/add/operator/bufferCount';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';

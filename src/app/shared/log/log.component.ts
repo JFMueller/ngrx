@@ -1,32 +1,29 @@
 import {
   Component,
-  OnDestroy,
   OnInit
 } from '@angular/core';
-import { PerformanceLogService } from '../../core/services/performance-log.service';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { AppState } from '../../app.state';
+import { Store } from '@ngrx/store';
+import { LogActions } from '../../state/actions';
+import { LogEntry } from '../../core/viewmodels/log-entry';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'rx-log',
   templateUrl: './log.component.html',
   styleUrls: ['./log.component.scss']
 })
-export class LogComponent implements OnInit, OnDestroy {
-  entries: string[] = [];
+export class LogComponent implements OnInit {
+  logEntries: Observable<LogEntry[]>;
 
-  private destroyed$: ReplaySubject<boolean> = new ReplaySubject<boolean>();
-
-  constructor(private pls: PerformanceLogService) {
+  constructor(private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
-    this.pls.logEntries$
-      .takeUntil(this.destroyed$)
-      .subscribe((entry: string) => this.entries.unshift(entry));
+    this.logEntries = this.store.select('logs');
   }
 
-  ngOnDestroy(): void {
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
+  clearEntries(): void {
+    this.store.dispatch(new LogActions.ClearAll());
   }
 }

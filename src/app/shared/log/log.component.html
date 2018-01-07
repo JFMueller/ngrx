@@ -1,3 +1,4 @@
+<button (click)="clearEntries()">Clear entries...</button>
 <ul>
-  <li *ngFor="let log of entries">{{log}}</li>
+  <li *ngFor="let log of logEntries | async">{{log.time}} {{log.msg}}</li>
 </ul>

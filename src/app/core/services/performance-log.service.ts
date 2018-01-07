@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { DateUtils } from '../utils/date.utils';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { AppState } from '../../app.state';
+import { Store } from '@ngrx/store';
+import { LogActions } from '../../state/actions';
 
 @Injectable()
 export class PerformanceLogService {
-  logEntries$: BehaviorSubject<string>;
-
   private applicationStartup: number;
 
-  constructor() {
+  constructor(private store: Store<AppState>) {
     this.applicationStartup = window.performance.now();
-    const timestamp = DateUtils.hourlyLogFormat(this.applicationStartup);
-    this.logEntries$ = new BehaviorSubject<string>(`${timestamp} Init`);
+    this.store.dispatch(new LogActions.Timestamp('PerformanceLogService init', this.applicationStartup));
   }
 
-  log(msg: string, object?: any): void {
-    const timestamp = DateUtils.hourlyLogFormat(this.applicationStartup);
-    const logMsg = `${timestamp} ${msg}`;
-    this.logEntries$.next(logMsg);
+  log(msg: string): void {
+    this.store.dispatch(new LogActions.Timestamp(msg, this.applicationStartup));
+  }
+
+  duration(msg: string, start: number, humanReadable = true): void {
+    this.store.dispatch(new LogActions.Duration(msg, start, humanReadable));
   }
 }

@@ -37,11 +37,11 @@ export class CloneDetailsComponent implements OnInit {
       .map((params: Params) => +params['count'])
       .filter((count: number) => count <= 10000)
       .switchMap(() => this.dataSampleService.loadWorldBankSample(),
-        (count: number, data: any) => Object.assign({count: count, data: data}))
+        (count: number, data: WorldBankDto[]) => Object.assign({count: count, data: data}))
       .map((countAndData: CountAndData) =>
         this.cloneService.cloneMultipleTimes(countAndData.data, CloneTypes.DeepNative, countAndData.count))
-      .map((clones: any[]) => clones.pop())
-      .map((clones: any[]) => clones.map((worldBankDto: WorldBankDto) => Object.assign({
+      .map((clones: WorldBankDto[][]) => clones.pop())
+      .map((clones: WorldBankDto[]) => clones.map((worldBankDto: WorldBankDto) => Object.assign({
         approvalfy: worldBankDto.approvalfy,
         board_approval_month: worldBankDto.board_approval_month,
         lendprojectcost: worldBankDto.lendprojectcost,

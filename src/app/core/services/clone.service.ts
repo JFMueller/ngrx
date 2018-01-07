@@ -10,8 +10,8 @@ export class CloneService {
   }
 
   cloneMultipleTimes(object: any, cloneType: CloneTypes, amount = 1): any[] {
-    this.pls.log(`Cloning ${amount} elements...`);
     let result = [];
+    const start = window.performance.now();
     switch (cloneType) {
       case CloneTypes.DeepNative:
         result = this.createClones(object, this.deepCloneNative, amount);
@@ -26,7 +26,7 @@ export class CloneService {
         result = this.createClones(object, this.shallowCloneLodash, amount);
         break;
     }
-    this.pls.log(`Finished ${cloneType} clone!`);
+    this.pls.duration(`${cloneType} cloned ${amount} objects`, start);
     return result;
   }
 
